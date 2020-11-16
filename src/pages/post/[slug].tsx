@@ -1,33 +1,38 @@
-import React, { useState, useEffect, useCallback } from 'react'
+
+import React from 'react'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import axios from 'axios'
 
-const Book = ({ book }) => {
-  console.log(book, 'the book')
-  if (!book) return <p>...loading</p>
+const Post = ({ post }) => {
+  console.log(post, 'the post')
+  if (!post) return <p>...loading</p>
   return (
     <div>  
       <article
         dangerouslySetInnerHTML={{
-          __html: book[0].content.rendered,
+          __html: post[0].content.rendered,
         }}
       />
     </div>
   )
 }
 
-export default Book
+export default Post
+
+
+
+
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const { slug } = context.params
   try {
-    const book = await axios.get(
-      `http://localhost:80/wp-json/wp/v2/books?slug=${slug}`
+    const post = await axios.get(
+      `http://localhost:80/wp-json/wp/v2/posts?slug=${slug}`
     )
 
     return {
       props: {
-        book: book.data,
+        post: post.data,
       },
     }
   } catch (err) {

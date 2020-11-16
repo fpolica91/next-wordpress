@@ -2,10 +2,11 @@ import React from 'react'
 import Link from 'next/link'
 import axios from 'axios'
 import { GetServerSideProps } from 'next'
-export default function Home({ books }) {
+
+export default function PostCollection({ posts }) {
   return (
     <div>
-      {books.map((book) => (
+      {posts.map((book) => (
         <div key={book.id}>
           <h1>{book.title.rendered}</h1>
           <article
@@ -14,7 +15,7 @@ export default function Home({ books }) {
               __html: book.excerpt.rendered,
             }}
           />
-          <Link href={`/book/${book.slug}`}>
+          <Link href={`/post/${book.slug}`}>
             <a>{book.title.rendered}</a>
           </Link>
         </div>
@@ -24,10 +25,10 @@ export default function Home({ books }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const books = await axios.get('http://localhost:80/wp-json/wp/v2/books')
+  const posts = await axios.get('http://localhost:80/wp-json/wp/v2/posts')
   return {
     props: {
-      books: books.data,
+      posts: posts.data,
     },
   }
 }
